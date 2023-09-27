@@ -2,13 +2,13 @@ package sshman
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
 
 	"bytes"
 
+	"github.com/sonnt85/gosystem"
 	"github.com/sonnt85/sshman/sshconfig"
 )
 
@@ -16,11 +16,13 @@ func writeConfig(p string, cfg *sshconfig.Config) error {
 
 	oldContents := []byte{}
 	if _, err := os.Stat(p); err == nil {
-		oldContents, _ = ioutil.ReadFile(p)
+		oldContents, _ = os.ReadFile(p)
 	}
 
 	if !bytes.Equal(oldContents, []byte(cfg.String())) {
-		return ioutil.WriteFile(p, []byte(cfg.String()), 0644)
+		defer gosystem.Chmod(p, 0644)
+		// return gosystem.WriteToFileWithLockSFL(p, cfg.String(), true)
+		return os.WriteFile(p, []byte(cfg.String()), 0644)
 	} else {
 		return nil
 	}

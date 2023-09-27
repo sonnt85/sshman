@@ -5,6 +5,11 @@ import (
 )
 
 func main() {
-	sshman.Tinit()
-	sshman.SshManCmd.Execute()
+	sshman.Init_SshMan()
+	sshman.Execute()
 }
+
+// func Tnit() {
+// 	slogrus.SetDefaultLoggerIsDiscard()
+// 	sdaemon.SystemCheck()
+// }

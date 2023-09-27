@@ -8,14 +8,19 @@ import (
 	"strings"
 
 	"github.com/sonnt85/gosutils/sutils"
+	"github.com/sonnt85/gosystem"
 	"github.com/sonnt85/sshman"
 	"github.com/spf13/cobra"
 )
 
 var (
-	path             string
+	path             = fmt.Sprintf("%s/.ssh/config", gosystem.GetHomeDir())
 	DisablePrintHost bool
 )
+
+type SshConfig struct {
+	path string
+}
 
 func getArgs(index int, args []string) string {
 	if len(args) > index {
@@ -25,8 +30,12 @@ func getArgs(index int, args []string) string {
 	}
 }
 
-func ListSSH(ign, pathShowFlag, onname bool, args []string) error {
-	hosts, err := sshman.List(path, sshman.ListOption{
+func NewSshConfig(path string) *SshConfig {
+	return &SshConfig{path: path}
+}
+
+func (sc *SshConfig) ListSSH(ign, pathShowFlag, onname bool, args []string) error {
+	hosts, err := sshman.List(sc.path, sshman.ListOption{
 		Keywords:   args,
 		IgnoreCase: ign,
 	})
@@ -37,6 +46,14 @@ func ListSSH(ign, pathShowFlag, onname bool, args []string) error {
 	fmt.Printf("%s total records: %d\n\n", sshman.SuccessFlag, len(hosts))
 	printHosts(pathShowFlag, hosts)
 	return nil
+}
+
+func ListSSH(ign, pathShowFlag, onname bool, args []string, paths ...string) error {
+	cfgpath := path
+	if len(paths) != 0 {
+		cfgpath = paths[0]
+	}
+	return NewSshConfig(cfgpath).ListSSH(ign, pathShowFlag, onname, args)
 }
 
 func listCmd(c *cobra.Command, args []string) error {
@@ -50,7 +67,7 @@ func listCmd(c *cobra.Command, args []string) error {
 			}
 			return nil
 		}
-		return errors.New("No alias found")
+		return errors.New("no alias found")
 	} else {
 		ign, _ := c.Flags().GetBool("ignorecase")
 		pathShowFlag, _ := c.Flags().GetBool("pathshow")
@@ -60,7 +77,7 @@ func listCmd(c *cobra.Command, args []string) error {
 
 func getoptCmd(c *cobra.Command, args []string) error {
 	if len(args) != 2 {
-		return fmt.Errorf("Missing args")
+		return fmt.Errorf("missing args")
 	}
 	ign, _ := c.Flags().GetBool("ignorecase")
 	//	fmt.Println(args)
@@ -121,7 +138,7 @@ func ListMatchFirstAlias(IgnoreCase bool, args []string) (alias string, err erro
 	if err != nil {
 		return alias, err
 	} else if len(aliass) == 0 {
-		return "", errors.New("Can not find match alias")
+		return "", errors.New("can not find match alias")
 	}
 	return aliass[0], nil
 }

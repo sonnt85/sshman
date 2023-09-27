@@ -2,6 +2,7 @@ package sshman
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"os/user"
 	"sort"
@@ -9,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/fatih/color"
+	"github.com/sonnt85/gosutils/sregexp"
 )
 
 var (
@@ -30,17 +32,14 @@ func ArgumentsCheck(argCount, min, max int) error {
 	return err
 }
 
-// Query values contains keys
+// Query values contains keys, key is parterm
 func Query(values, keys []string, ignoreCase bool) bool {
 	contains := func(key string) bool {
 		if ignoreCase {
-			key = strings.ToLower(key)
+			key = fmt.Sprintf("(?i:%s)", key)
 		}
 		for _, value := range values {
-			if ignoreCase {
-				value = strings.ToLower(value)
-			}
-			if strings.Contains(value, key) {
+			if sregexp.New(key).MatchString(value) {
 				return true
 			}
 		}
