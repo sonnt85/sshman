@@ -32,7 +32,8 @@ func Init_SshMan(parent ...*cobra.Command) {
 	}
 	sshmanAdd := &cobra.Command{
 		Use:     "add",
-		Short:   "Add a new ssh alias record",
+		Short:   "Add a new ssh alias record [sshman  add -f ~/.ssh/config-local  server03  root@localhost:22]",
+		Long:    "sshman  add -f ~/.ssh/config-local  server03  root@localhost:22",
 		RunE:    addCmd,
 		Aliases: []string{"a"},
 	}
@@ -54,7 +55,8 @@ func Init_SshMan(parent ...*cobra.Command) {
 
 	sshmanList := &cobra.Command{
 		Use:     "list",
-		Short:   "List all or query ssh alias records",
+		Short:   "List all or query ssh alias records [sshman list aliasname]",
+		Long:    "sshman list aliasname",
 		RunE:    listCmd,
 		Aliases: []string{"l"},
 	}
@@ -65,7 +67,8 @@ func Init_SshMan(parent ...*cobra.Command) {
 
 	sshmanGetOpt := &cobra.Command{
 		Use:     "get",
-		Short:   "Get opt of first alias  match",
+		Short:   "Get opt of first alias  match [sshman get aliasname port]",
+		Long:    "sshman get aliasname port",
 		RunE:    getoptCmd,
 		Aliases: []string{"g"},
 	}
@@ -76,7 +79,8 @@ func Init_SshMan(parent ...*cobra.Command) {
 
 	sshmanUpdate := &cobra.Command{
 		Use:     "update",
-		Short:   "Update the specified ssh alias",
+		Short:   "Update the specified ssh alias [sshman update  aliasname -c port=22]",
+		Long:    "sshman update  aliasname -c port=22",
 		RunE:    updateCmd,
 		Aliases: []string{"u"},
 	}

@@ -208,6 +208,21 @@ func addCmd(c *cobra.Command, args []string) error {
 	return AddAlias(addpath, identityfile, kvConfig, pathShowFlag, args)
 }
 
+// args[0] -> origin alias
+// args[1] -> Host include ip
+func UpsertSSH(remname, identityfile string, kvConfig map[string]string, pathShowFlag bool, args []string, disablePrints ...bool) error {
+	aliasOrg, _ := ListMatchFirstAlias(false, []string{args[0]})
+	// if err != nil {
+	// 	return err
+	// }
+	if aliasOrg == "" {
+		return AddAlias("", identityfile, kvConfig, pathShowFlag, args, disablePrints...)
+	} else {
+		args[0] = aliasOrg
+		return UpdateSSH(remname, identityfile, kvConfig, pathShowFlag, args, disablePrints...)
+	}
+}
+
 func UpdateSSH(remname, identityfile string, kvConfig map[string]string, pathShowFlag bool, args []string, disablePrints ...bool) error {
 	// Check arguments count
 	enablePrint := len(disablePrints) != 0 && disablePrints[0]
