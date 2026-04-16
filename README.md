@@ -136,3 +136,8 @@ export SSHMAN_ADD_PATH=~/.ssh/config.d/temp
 ```
 ## Licence
 [MIT License](https://github.com/sonnt85/sshman/blob/master/LICENSE)
+
+## Author
+
+**sonnt85** — [thanhson.rf@gmail.com](mailto:thanhson.rf@gmail.com)
+
