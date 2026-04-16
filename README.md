@@ -1,4 +1,6 @@
 # sshman
+
+[![Go Reference](https://pkg.go.dev/badge/github.com/sonnt85/sshman.svg)](https://pkg.go.dev/github.com/sonnt85/sshman)
 sshman is a command line tool for managing your ssh alias config easily, inspired by [storm](https://github.com/emre/storm) project, powered by Go.
 
 ## Feature
